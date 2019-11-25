@@ -302,13 +302,13 @@ class HttpReqQ:
         self.busy = True
         dRes = defer.Deferred()
         d = readBody(httpHeader)
-        print ("Reading body")
+        # print ("Reading body")
         d.addCallback(lambda body: self._readBodyCallback(dRes, body))
         d.addErrback(lambda err: self._readBodyErrback(dRes, err))
         return dRes
 
     def _reqCallback(self, req, res):
-        print ("Body read")
+        # print ("Body read")
         self.busy = False
         req.d.callback(res)
         self._processQ()
@@ -330,7 +330,7 @@ class HttpReqQ:
 
     def _processQ(self):
         if not (self.busy) and len(self.q) > 0:
-            print ("Processing a new request from the queue")
+            # print ("Processing a new request from the queue")
             req = self.q.pop(0)
             dAdapter = self.agent.request(req.method, req.url, req.headers, req.body)
             dAdapter.addCallback(lambda res: self._reqCallback(req, res))
@@ -459,7 +459,7 @@ class HlsProxy:
         self.reactor.callLater(playlist.targetDuration, self.refreshPlaylist)
 
     def onVariantPlaylist(self, playlist):
-        print "Found variant playlist."
+        # print "Found variant playlist."
         masterPlaylist = HlsPlaylist()
         masterPlaylist.version = playlist.version
 
@@ -589,11 +589,11 @@ class HlsProxy:
             self.writeFile(individual_pl_fn, self._clientPlaylistText)
 
     def retryPlaylist(self):
-        print "Retrying playlist"
+        # print "Retrying playlist"
         self.refreshPlaylist()
 
     def refreshPlaylist(self):
-        print "Getting playlist from ", self.srvPlaylistUrl
+        # print "Getting playlist from ", self.srvPlaylistUrl
         d = self.reqQ.request(
             "GET", self.srvPlaylistUrl, Headers(self.httpHeaders()), None
         )
