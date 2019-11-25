@@ -143,7 +143,8 @@ class HlsPlaylist:
 
                     self.items.append(item)
                 else:
-                    print "Unknown tag: ", key
+                    # print "Unknown tag: ", key
+                    pass
             else:
                 print "Dangling playlit item: ", line
         if len(self.items) == 0 and len(self.variants) == 0:
