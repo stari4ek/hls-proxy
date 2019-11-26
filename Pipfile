@@ -1,3 +1,4 @@
 [packages]
 twisted = "*"
 pyopenssl = "*"
+service-identity = "*"
