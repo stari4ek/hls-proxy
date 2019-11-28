@@ -419,7 +419,7 @@ class HlsProxy:
             print "The following errors where encountered while parsing the server playlist:"
             for err in playlist.errors:
                 print "\t", err
-            print "Invalide playlist. Retrying after default interval of 2s"
+            print "Invalid playlist. Retrying after default interval of 2s"
             self.reactor.callLater(2, self.retryPlaylist)
 
     def onValidPlaylist(self, playlist):
@@ -452,7 +452,11 @@ class HlsProxy:
         # request new ones
         for item in playlist.items:
             if self.clientPlaylist.getItem(item.mediaSequence) is None:
-                self.requestFragment(item)
+                filename = self.getSegmentFilename(item)
+                if os.path.isfile(filename):
+                    print "Skipping already downloaded fragment %s" % filename
+                else:
+                    self.requestFragment(item)
         # update the playlist
         self.clientPlaylist = playlist
         self.refreshClientPlaylist()
