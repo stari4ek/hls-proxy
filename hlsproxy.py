@@ -386,6 +386,10 @@ class HlsProxy:
             print "Response phrase:", response.phrase
             print "Response headers:"
             print pformat(list(response.headers.getAllRawHeaders()))
+
+        # handle redirect
+        self.srvPlaylistUrl = response.request.absoluteURI
+
         d = self.reqQ.readBody(response)
         d.addCallback(self.cbBody)
         d.addErrback(self.onGetPlaylistError)
